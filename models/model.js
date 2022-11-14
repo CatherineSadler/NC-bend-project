@@ -36,3 +36,20 @@ exports.selectReviews = () => {
       return reviews.rows;
     });
 };
+
+exports.selectReviewsById = (review_id) => {
+  console.log(review_id);
+  return db
+    .query(
+      `
+    SELECT * FROM reviews
+    WHERE review_id = $1;`,
+      [review_id]
+    )
+    .then((review) => {
+      if (review.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Review not found" });
+      }
+      return review.rows[0];
+    });
+};
