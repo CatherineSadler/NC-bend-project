@@ -1,17 +1,15 @@
 const express = require("express");
 const app = express();
-const { getCategories } = require('./controllers/controller.js')
-
+const { getCategories, getReviews } = require("./controllers/controller.js");
 
 app.use(express.json());
 
-app.get('/api/categories', getCategories)
-
-
+app.get("/api/categories", getCategories);
+app.get("/api/reviews", getReviews);
 
 app.use((err, req, res, next) => {
-    console.log(err);
-    res.status(500).send("server error!");
-  });
-  
-  module.exports = app;
+  console.log(err);
+  res.status(500).send("server error!");
+});
+
+module.exports = app;
