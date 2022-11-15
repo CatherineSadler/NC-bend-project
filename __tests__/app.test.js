@@ -134,7 +134,7 @@ describe("/api/reviews/:review_id", () => {
 describe("/api/reviews/:review_id/comments", () => {
   test("GET 200 - returns array of comment objects for associated review_id, sorted with newest first", () => {
     return request(app)
-      .get("/api/reviews/1/comments")
+      .get("/api/reviews/2/comments")
       .then((res) => {
         expect(Array.isArray(res.body.comments)).toBe(true)
         res.body.comments.forEach((comment) => {
@@ -144,7 +144,7 @@ describe("/api/reviews/:review_id/comments", () => {
             created_at: expect.any(String),
             author: expect.any(String),
             body: expect.any(String),
-            review_id: 1,
+            review_id: 2,
           });
         });
         expect(res.body.comments).toBeSortedBy("created_at", { descending: true });
@@ -161,6 +161,75 @@ describe("/api/reviews/:review_id/comments", () => {
   test('GET 400 - errors for review_id not of type integer', () => {
     return request(app)
     .get("/api/reviews/badString/comments")
+    .then(res => {
+        expect(res.body.msg).toBe('Invalid data type')
+    })
+  });
+  test('POST 201 - returns posted comment', () => {
+    const newComment = {
+      body: 'this is a test comment',
+      username: 'mallionaire'
+    }
+    return request(app)
+    .post('/api/reviews/1/comments')
+    .send(newComment)
+    .expect(201)
+    .then(res => {
+      expect(res.body.comment).toMatchObject({
+        body: 'this is a test comment',
+        author: 'mallionaire',
+        review_id: 1,
+        comment_id: expect.any(Number),
+        votes: 0,
+        created_at: expect.any(String)
+      })
+    })
+  });
+  test('POST 404 review not found', () => {
+    const newComment = {
+      body: 'this is a test comment',
+      username: 'mallionaire'
+    }
+    return request(app)
+    .post('/api/reviews/1000/comments')
+    .send(newComment)
+    .expect(404)
+    .then(res => {
+      expect(res.body.msg).toBe('Review 1000 not found')
+  })
+  });
+  test('POST 400 - bad request if object doesnt have all required keys', () => {
+    const newCommentNoBody = {
+      username: 'mallionaire'
+    }
+    return request(app)
+    .post('/api/reviews/1/comments')
+    .send(newCommentNoBody)
+    .expect(400)
+    .then(res => {
+      expect(res.body.msg).toBe('Incomplete object')
+  })
+  });
+  test('POST 400 - bad request if object doesnt have all required keys', () => { 
+    const newCommentNoUsername = {
+      body: 'this is a test comment'
+    }
+    return request(app)
+    .post('/api/reviews/1/comments')
+    .send(newCommentNoUsername)
+    .expect(400)
+    .then(res => {
+      expect(res.body.msg).toBe('Incomplete object')
+  })
+  })
+  test('POST 400 - errors for review_id not of type integer', () => {
+    const newComment = {
+      body: 'this is a test comment',
+      username: 'mallionaire'
+    }
+    return request(app)
+    .post("/api/reviews/badString/comments")
+    .send(newComment)
     .then(res => {
         expect(res.body.msg).toBe('Invalid data type')
     })
