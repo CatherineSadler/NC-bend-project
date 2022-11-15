@@ -55,20 +55,12 @@ exports.selectReviewsById = (review_id) => {
 
 exports.selectCommentsByReviewId = (review_id) => {
   return db
-    .query(`SELECT * FROM reviews WHERE review_id = $1`, [review_id])
-    .then((reviews) => {
-      if (reviews.rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "Review not found" });
-      }
-    })
-    .then(() => {
-      return db.query(
-        `SELECT * FROM comments
-            WHERE review_id = $1
-            ORDER BY created_at DESC`,
-        [review_id]
-      );
-    })
+    .query(
+      `SELECT * FROM comments
+        WHERE review_id = $1
+        ORDER BY created_at DESC`,
+      [review_id]
+    )
     .then((comments) => {
       return comments.rows;
     });

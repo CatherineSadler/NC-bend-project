@@ -84,7 +84,7 @@ describe("/api/reviews/:review_id", () => {
 describe("/api/reviews/:review_id/comments", () => {
   test("GET 200 - returns array of comment objects for associated review_id, sorted with newest first", () => {
     return request(app)
-      .get("/api/reviews/1/comments")
+      .get("/api/reviews/2/comments")
       .then((res) => {
         expect(Array.isArray(res.body.comments)).toBe(true)
         res.body.comments.forEach((comment) => {
@@ -94,7 +94,7 @@ describe("/api/reviews/:review_id/comments", () => {
             created_at: expect.any(String),
             author: expect.any(String),
             body: expect.any(String),
-            review_id: 1,
+            review_id: 2,
           });
         });
         expect(res.body.comments).toBeSortedBy("created_at", { descending: true });
