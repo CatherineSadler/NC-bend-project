@@ -5,6 +5,7 @@ const {
   getReviews,
   getReviewsById,
   getCommentsByReviewId,
+  patchReviewVotesById
   postCommentsByReviewId,
   getUsers
 } = require("./controllers/controller.js");
@@ -17,6 +18,7 @@ app.get("/api/reviews/:review_id", getReviewsById);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId)
 app.post("/api/reviews/:review_id/comments", postCommentsByReviewId)
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
+app.patch("/api/reviews/:review_id", patchReviewVotesById)
 app.get("/api/users", getUsers)
 
 app.use((err, req, res, next) => {
@@ -49,15 +51,17 @@ app.use((err,req,res,next) => {
     }
 })
 app.use((err, req, res, next) => {
-  if (err.code === "22P02") {
-    res.status(400).send({ msg: "Invalid data type" });
-  } else {
-    next(err);
-  }
+  if (err.code === '22P02') {
+    res.status(400).send({msg:'Invalid data type'})
+}
+else if (err.code === '23502') {
+  res.status(400).send({msg: 'Incomplete object on body'})
+}
+  else next(err)
 });
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  console.log(err)
   res.status(500).send("server error!");
 });
 
