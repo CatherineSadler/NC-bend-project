@@ -79,6 +79,56 @@ describe("/api/reviews/:review_id", () => {
         expect(res.body.msg).toBe("Review not found");
       });
   });
+  test('PATCH 200 - returns updated review object', () => {
+    const vote_inc = {inc_votes: 5}
+    return request(app)
+    .patch("/api/reviews/1")
+    .send(vote_inc)
+    .expect(200)
+    .then((res) => {
+      expect(res.body.review).toMatchObject({
+          review_id: 1,
+          title: expect.any(String),
+          review_body: expect.any(String),
+          designer: expect.any(String),
+          review_img_url: expect.any(String),
+          votes: expect.any(Number),
+          category: expect.any(String),
+          owner: expect.any(String),
+          created_at: expect.any(String),
+      })
+    })
+  });
+  test('PATCH 400 if incomplete keys', () => {
+    const vote_increment = {test:'test'}
+    return request(app)
+    .patch("/api/reviews/1")
+    .send(vote_increment.test)
+    .expect(400)
+    .then((res) => {
+      expect(res.body.msg).toBe('Incomplete object on body')
+    })
+  });
+  test('PATCH 404 - errors if review not found', () => {
+    const vote_inc = {inc_votes: 5}
+    return request(app)
+    .patch("/api/reviews/1000")
+    .send(vote_inc)
+    .expect(404)
+    .then((res) => {
+        expect(res.body.msg).toBe("Review not found");
+      });
+  });
+  test('PATCH 400- errors if invalid data type', () => {
+    const vote_inc = {inc_votes:'badString'}
+    return request(app)
+    .patch("/api/reviews/1")
+    .send(vote_inc)
+    .expect(400)
+    .then((res) => {
+        expect(res.body.msg).toBe("Invalid data type");
+      });
+  });
 });
 
 describe("/api/reviews/:review_id/comments", () => {
@@ -157,7 +207,7 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newCommentNoBody)
     .expect(400)
     .then(res => {
-      expect(res.body.msg).toBe('Incomplete object')
+      expect(res.body.msg).toBe('Incomplete object on body')
   })
   });
   test('POST 400 - bad request if object doesnt have all required keys', () => { 
@@ -169,7 +219,7 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newCommentNoUsername)
     .expect(400)
     .then(res => {
-      expect(res.body.msg).toBe('Incomplete object')
+      expect(res.body.msg).toBe('Incomplete object on body')
   })
   })
   test('POST 400 - errors for review_id not of type integer', () => {
@@ -182,6 +232,24 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newComment)
     .then(res => {
         expect(res.body.msg).toBe('Invalid data type')
+    })
+  });
+});
+
+describe('/api/users', () => {
+  test('GET 200 - responds with array of users', () => {
+    return request(app)
+    .get("/api/users")
+    .then(res => {
+      const users = res.body.users
+      expect(users.length).toBe(4)
+      users.forEach((user) => {
+        expect(user).toMatchObject({
+          username: expect.any(String),
+          name: expect.any(String),
+          avatar_url: expect.any(String)
+        })
+      })
     })
   });
 });

@@ -3,7 +3,9 @@ const {
   selectReviews,
   selectReviewsById,
   selectCommentsByReviewId,
-  insertIntoCommentsByReviewId
+  insertIntoCommentsByReviewId,
+  selectUsers,
+  updateReviewVotes,
 } = require("../models/model.js");
 
 exports.getCategories = (req, res, next) => {
@@ -41,6 +43,16 @@ exports.getCommentsByReviewId = (req, res, next) => {
     .catch(next);
 };
 
+exports.patchReviewVotesById = (req,res,next) => {
+  const review_id = req.params.review_id;
+  const vote_increment = req.body.inc_votes;
+  return updateReviewVotes(review_id, vote_increment)
+    .then((review => {
+      res.send({ review })
+    }
+    ))
+    .catch(next)
+}
 exports.postCommentsByReviewId = (req,res,next) => {
   const body = req.body.body;
   const username = req.body.username;
@@ -50,5 +62,12 @@ exports.postCommentsByReviewId = (req,res,next) => {
     res.status(201).send({ comment })
   })
   .catch(next)
+}
+
+exports.getUsers = (req,res,next) => {
+  return selectUsers()
+  .then(users => {
+    res.send({ users })
+  })
 }
 
