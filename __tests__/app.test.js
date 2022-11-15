@@ -115,4 +115,37 @@ describe("/api/reviews/:review_id/comments", () => {
         expect(res.body.msg).toBe('Invalid data type')
     })
   });
+  test('POST 201 - returns posted comment', () => {
+    const newComment = {
+      body: 'this is a test comment',
+      username: 'mallionaire'
+    }
+    return request(app)
+    .post('/api/reviews/1/comments')
+    .send(newComment)
+    .expect(201)
+    .then(res => {
+      expect(res.body.comment).toMatchObject({
+        body: 'this is a test comment',
+        author: 'mallionaire',
+        review_id: 1,
+        comment_id: expect.any(Number),
+        votes: 0,
+        created_at: expect.any(String)
+      })
+    })
+  });
+  test('POST 404 review not found', () => {
+    const newComment = {
+      body: 'this is a test comment',
+      username: 'mallionaire'
+    }
+    return request(app)
+    .post('/api/reviews/1000/comments')
+    .send(newComment)
+    .expect(404)
+    .then(res => {
+      expect(res.body.msg).toBe('Review not found')
+  })
+  });
 });

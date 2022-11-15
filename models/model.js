@@ -53,24 +53,39 @@ exports.selectReviewsById = (review_id) => {
     });
 };
 
-
 exports.selectCommentsByReviewId = (review_id) => {
-    return db
+  return db
     .query(`SELECT * FROM reviews WHERE review_id = $1`, [review_id])
-    .then(reviews => {
-        if (reviews.rows.length === 0) {
-            return Promise.reject({status:404, msg:'Review not found'})
-        }
+    .then((reviews) => {
+      if (reviews.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Review not found" });
+      }
     })
     .then(() => {
-        return db
-        .query(
-            `SELECT * FROM comments
+      return db.query(
+        `SELECT * FROM comments
             WHERE review_id = $1
-            ORDER BY created_at DESC`, [review_id]
-        )
+            ORDER BY created_at DESC`,
+        [review_id]
+      );
     })
     .then((comments) => {
-        return comments.rows
-    })
-}
+      return comments.rows;
+    });
+};
+
+exports.insertIntoCommentsByReviewId = (body, username, date, review_id) => {
+  return db
+    .query(
+      `
+  INSERT INTO 
+    comments  (body, author, review_id, votes, created_at)
+  VALUES
+    ($1, $2, $3, $4, $5) 
+  RETURNING *`,
+      [body, username, review_id, 0, date]
+    )
+    .then((comment) => {
+      return comment.rows[0];
+    });
+};
