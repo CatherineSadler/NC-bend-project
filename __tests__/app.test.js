@@ -145,7 +145,7 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newComment)
     .expect(404)
     .then(res => {
-      expect(res.body.msg).toBe('Review not found')
+      expect(res.body.msg).toBe('Review 1000 not found')
   })
   });
   test('POST 400 - bad request if object doesnt have all required keys', () => {

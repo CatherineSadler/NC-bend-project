@@ -42,11 +42,7 @@ exports.postCommentsByReviewId = (req,res,next) => {
   const body = req.body.body;
   const username = req.body.username;
   const review_id = req.params.review_id;
-  const date = Date.now()
-  return selectReviewsById(review_id)
-  .then(() => {
-    return insertIntoCommentsByReviewId(body, username, new Date(date), review_id)
-  })
+ insertIntoCommentsByReviewId(body, username, review_id)
   .then(comment => {
     res.status(201).send({ comment })
   })

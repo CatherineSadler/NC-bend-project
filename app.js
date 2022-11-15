@@ -27,7 +27,17 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err,req,res,next) => {
-    if (err.code === '22P02') {
+  if (err.code === "23503") {
+    const errorValue = err.detail.match(/\(([^\(]*)\)/g)[1].slice(1, -1);
+    if (err.detail.startsWith("Key (author)=")) {
+      res.status(400).send({msg: `user ${errorValue} does not exist`})
+    }
+    if (err.detail.startsWith("Key (review_id)=")) {
+      res.status(404).send({msg: `Review ${errorValue} not found`})
+    }
+  } 
+
+    else if (err.code === '22P02') {
         res.status(400).send({msg:'Invalid data type'})
     }
     else if (err.code === '23502') {
