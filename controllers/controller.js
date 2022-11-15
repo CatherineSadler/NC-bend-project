@@ -28,7 +28,6 @@ exports.getReviewsById = (req, res, next) => {
     })
     .catch(next);
 };
-
 exports.getCommentsByReviewId = (req, res, next) => {
   return selectReviewsById(req.params.review_id)
     .then(() => {
