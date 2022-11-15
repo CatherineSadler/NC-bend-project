@@ -5,7 +5,8 @@ const {
   getReviews,
   getReviewsById,
   getCommentsByReviewId,
-  postCommentsByReviewId
+  postCommentsByReviewId,
+  getUsers
 } = require("./controllers/controller.js");
 
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get("/api/reviews/:review_id", getReviewsById);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId)
 app.post("/api/reviews/:review_id/comments", postCommentsByReviewId)
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
+app.get("/api/users", getUsers)
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
