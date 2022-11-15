@@ -38,7 +38,6 @@ exports.selectReviews = () => {
 };
 
 exports.selectReviewsById = (review_id) => {
-  console.log(review_id);
   return db
     .query(
       `
@@ -53,3 +52,17 @@ exports.selectReviewsById = (review_id) => {
       return review.rows[0];
     });
 };
+
+exports.selectCommentsByReviewId = (review_id) => {
+  return db
+    .query(
+      `SELECT * FROM comments
+        WHERE review_id = $1
+        ORDER BY created_at DESC`,
+      [review_id]
+    )
+    .then((comments) => {
+      return comments.rows;
+    });
+};
+

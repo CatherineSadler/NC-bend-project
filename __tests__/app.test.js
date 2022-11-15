@@ -80,3 +80,39 @@ describe("/api/reviews/:review_id", () => {
       });
   });
 });
+
+describe("/api/reviews/:review_id/comments", () => {
+  test("GET 200 - returns array of comment objects for associated review_id, sorted with newest first", () => {
+    return request(app)
+      .get("/api/reviews/1/comments")
+      .then((res) => {
+        expect(Array.isArray(res.body.comments)).toBe(true)
+        res.body.comments.forEach((comment) => {
+          expect(comment).toMatchObject({
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            review_id: 1,
+          });
+        });
+        expect(res.body.comments).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+  test('GET 404 - errors for review id out of bounds', () => {
+    return request(app)
+    .get("/api/reviews/1000/comments")
+    .expect(404)
+    .then(res => {
+        expect(res.body.msg).toBe('Review not found')
+    })
+  });
+  test('GET 400 - errors for review_id not of type integer', () => {
+    return request(app)
+    .get("/api/reviews/badString/comments")
+    .then(res => {
+        expect(res.body.msg).toBe('Invalid data type')
+    })
+  });
+});
