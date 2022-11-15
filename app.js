@@ -15,8 +15,7 @@ app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id", getReviewsById);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId)
 app.post("/api/reviews/:review_id/comments", postCommentsByReviewId)
-
-
+app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
@@ -37,6 +36,13 @@ app.use((err,req,res,next) => {
         next(err)
     }
 })
+app.use((err, req, res, next) => {
+  if (err.code === "22P02") {
+    res.status(400).send({ msg: "Invalid data type" });
+  } else {
+    next(err);
+  }
+});
 
 app.use((err, req, res, next) => {
   console.log(err);

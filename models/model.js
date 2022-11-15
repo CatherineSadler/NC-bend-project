@@ -69,21 +69,27 @@ exports.selectCommentsByReviewId = (review_id) => {
         [review_id]
       );
     })
+    .query(
+      `SELECT * FROM comments
+        WHERE review_id = $1
+        ORDER BY created_at DESC`,
+      [review_id]
+    )
     .then((comments) => {
       return comments.rows;
     });
 };
 
-exports.insertIntoCommentsByReviewId = (body, username, date, review_id) => {
+exports.insertIntoCommentsByReviewId = (body, username, review_id) => {
   return db
     .query(
       `
   INSERT INTO 
-    comments  (body, author, review_id, votes, created_at)
+    comments  (body, author, review_id)
   VALUES
-    ($1, $2, $3, $4, $5) 
+    ($1, $2, $3) 
   RETURNING *`,
-      [body, username, review_id, 0, date]
+      [body, username, review_id]
     )
     .then((comment) => {
       return comment.rows[0];

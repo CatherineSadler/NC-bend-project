@@ -32,23 +32,30 @@ exports.getReviewsById = (req, res, next) => {
 
 exports.getCommentsByReviewId = (req, res, next) => {
   return selectCommentsByReviewId(req.params.review_id)
+    })
+    .catch(next);
+};
+exports.getCommentsByReviewId = (req, res, next) => {
+  return selectReviewsById(req.params.review_id)
+    .then(() => {
+      return selectCommentsByReviewId(req.params.review_id);
+    })
     .then((comments) => {
       res.send({ comments });
     })
     .catch(next);
 };
-
 exports.postCommentsByReviewId = (req,res,next) => {
   const body = req.body.body;
   const username = req.body.username;
   const review_id = req.params.review_id;
-  const date = Date.now()
   return selectReviewsById(review_id)
   .then(() => {
-    return insertIntoCommentsByReviewId(body, username, new Date(date), review_id)
+    return insertIntoCommentsByReviewId(body, username, review_id)
   })
   .then(comment => {
     res.status(201).send({ comment })
   })
   .catch(next)
 }
+
