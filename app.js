@@ -16,8 +16,6 @@ app.get("/api/categories", getCategories);
 app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id", getReviewsById);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
-app.post("/api/reviews/:review_id/comments", postCommentsByReviewId);
-app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 app.patch("/api/reviews/:review_id", patchReviewVotesById);
 app.get("/api/users", getUsers);
 
