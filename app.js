@@ -5,9 +5,9 @@ const {
   getReviews,
   getReviewsById,
   getCommentsByReviewId,
-  postCommentsByReviewId,
-  getUsers,
   patchReviewVotesById,
+  postCommentsByReviewId,
+  getUsers
 } = require("./controllers/controller.js");
 
 app.use(express.json());

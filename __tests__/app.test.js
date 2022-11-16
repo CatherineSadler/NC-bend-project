@@ -55,11 +55,11 @@ describe("/api/reviews", () => {
 describe("/api/reviews/:review_id", () => {
   test("GET 200 - returns object associated with id", () => {
     return request(app)
-      .get("/api/reviews/1")
+      .get("/api/reviews/2")
       .expect(200)
       .then((res) => {
         expect(res.body.review).toMatchObject({
-          review_id: 1,
+          review_id: 2,
           title: expect.any(String),
           review_body: expect.any(String),
           designer: expect.any(String),
@@ -68,6 +68,7 @@ describe("/api/reviews/:review_id", () => {
           category: expect.any(String),
           owner: expect.any(String),
           created_at: expect.any(String),
+          review_body: expect.any(String)
         });
       });
   });
