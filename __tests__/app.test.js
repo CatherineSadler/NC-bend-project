@@ -255,3 +255,22 @@ describe('/api/users', () => {
     })
   });
 });
+
+describe('/api/comments/:comment_id', () => {
+  test('DELETE 204: returns empty body upon successful deletion', () => {
+    return request(app)
+    .delete('/api/comments/1')
+    .expect(204)
+    .then(res => {
+      expect(res.body).toEqual({})
+    })
+  });
+  test('DELETE 404 - errors for comment id not found', () => {
+    return request(app)
+    .delete('/api/comments/1000')
+    .expect(404)
+    .then(res => {
+      expect(res.body.msg).toBe('Comment not found')
+    })
+  });
+});

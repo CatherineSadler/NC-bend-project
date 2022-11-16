@@ -6,6 +6,7 @@ const {
   updateReviewVotes,
   insertIntoCommentsByReviewId,
   selectUsers,
+  removeComment,
 } = require("../models/model.js");
 
 exports.getCategories = (req, res, next) => {
@@ -71,3 +72,10 @@ exports.getUsers = (req,res,next) => {
   })
 }
 
+exports.deleteComment = (req,res,next) => {
+  return removeComment(req.params.comment_id)
+  .then(() => {
+    res.status(204).send()
+  })
+  .catch(next)
+}
