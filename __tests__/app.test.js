@@ -92,7 +92,7 @@ describe("/api/reviews/:review_id", () => {
           review_body: expect.any(String),
           designer: expect.any(String),
           review_img_url: expect.any(String),
-          votes: expect.any(Number),
+          votes: 6,
           category: expect.any(String),
           owner: expect.any(String),
           created_at: expect.any(String),
