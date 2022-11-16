@@ -5,7 +5,7 @@ const {
   getReviews,
   getReviewsById,
   getCommentsByReviewId,
-  patchReviewVotesById
+  patchReviewVotesById,
   postCommentsByReviewId,
   getUsers
 } = require("./controllers/controller.js");
