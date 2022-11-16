@@ -209,7 +209,7 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newCommentNoBody)
     .expect(400)
     .then(res => {
-      expect(res.body.msg).toBe('Incomplete object')
+      expect(res.body.msg).toBe('Incomplete object on body')
   })
   });
   test('POST 400 - bad request if object doesnt have all required keys', () => { 
@@ -221,7 +221,7 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newCommentNoUsername)
     .expect(400)
     .then(res => {
-      expect(res.body.msg).toBe('Incomplete object')
+      expect(res.body.msg).toBe('Incomplete object on body')
   })
   })
   test('POST 400 - errors for review_id not of type integer', () => {
