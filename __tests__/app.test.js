@@ -92,7 +92,7 @@ describe("/api/reviews/:review_id", () => {
           review_body: expect.any(String),
           designer: expect.any(String),
           review_img_url: expect.any(String),
-          votes: expect.any(Number),
+          votes: 6,
           category: expect.any(String),
           owner: expect.any(String),
           created_at: expect.any(String),
@@ -207,7 +207,7 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newCommentNoBody)
     .expect(400)
     .then(res => {
-      expect(res.body.msg).toBe('Incomplete object')
+      expect(res.body.msg).toBe('Incomplete object on body')
   })
   });
   test('POST 400 - bad request if object doesnt have all required keys', () => { 
@@ -219,7 +219,7 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newCommentNoUsername)
     .expect(400)
     .then(res => {
-      expect(res.body.msg).toBe('Incomplete object')
+      expect(res.body.msg).toBe('Incomplete object on body')
   })
   })
   test('POST 400 - errors for review_id not of type integer', () => {
@@ -232,6 +232,24 @@ describe("/api/reviews/:review_id/comments", () => {
     .send(newComment)
     .then(res => {
         expect(res.body.msg).toBe('Invalid data type')
+    })
+  });
+});
+
+describe('/api/users', () => {
+  test('GET 200 - responds with array of users', () => {
+    return request(app)
+    .get("/api/users")
+    .then(res => {
+      const users = res.body.users
+      expect(users.length).toBe(4)
+      users.forEach((user) => {
+        expect(user).toMatchObject({
+          username: expect.any(String),
+          name: expect.any(String),
+          avatar_url: expect.any(String)
+        })
+      })
     })
   });
 });

@@ -101,3 +101,13 @@ exports.insertIntoCommentsByReviewId = (body, username, review_id) => {
       return comment.rows[0];
     });
 };
+
+exports.selectUsers = () => {
+  return db
+  .query(
+    `SELECT username, name, avatar_url FROM users`
+  )
+  .then(users => {
+    return users.rows
+  })
+}
