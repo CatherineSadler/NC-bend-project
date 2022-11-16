@@ -5,6 +5,7 @@ const {
   getReviews,
   getReviewsById,
   getCommentsByReviewId,
+  patchReviewVotesById,
   postCommentsByReviewId,
   getUsers
 } = require("./controllers/controller.js");
@@ -42,7 +43,7 @@ app.use((err,req,res,next) => {
         res.status(400).send({msg:'Invalid data type'})
     }
     else if (err.code === '23502') {
-      res.status(400).send({msg:'Incomplete object'})
+      res.status(400).send({msg:'Incomplete object on body'})
     }
     else{
         next(err)

@@ -3,8 +3,9 @@ const {
   selectReviews,
   selectReviewsById,
   selectCommentsByReviewId,
+  updateReviewVotes,
   insertIntoCommentsByReviewId,
-  selectUsers
+  selectUsers,
 } = require("../models/model.js");
 
 exports.getCategories = (req, res, next) => {
