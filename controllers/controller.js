@@ -6,6 +6,7 @@ const {
   updateReviewVotes,
   insertIntoCommentsByReviewId,
   selectUsers,
+  removeComment,
 } = require("../models/model.js");
 
 const { checkCategory } = require("../db/seeds/utils.js");
@@ -75,3 +76,12 @@ exports.getUsers = (req, res, next) => {
     res.send({ users });
   });
 };
+
+exports.deleteComment = (req,res,next) => {
+  return removeComment(req.params.comment_id)
+  .then(() => {
+    res.status(204).send()
+  })
+  .catch(next)
+}
+
