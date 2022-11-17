@@ -69,6 +69,7 @@ describe("/api/reviews/:review_id", () => {
           owner: expect.any(String),
           created_at: expect.any(String),
           review_body: expect.any(String),
+          comment_count: expect.any(Number),
         });
       });
   });
