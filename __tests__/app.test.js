@@ -389,4 +389,20 @@ describe("/api/reviews?sort_by=title", () => {
         expect(res.body.msg).toBe("Invalid sort_by query");
       });
   });
+  test("GET 200 - valid category query but non existent in table", () => {
+    return request(app)
+      .get("/api/reviews?category=children's games")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.reviews).toEqual([]);
+      });
+  });
+  test("GET 400 -  category query  non existent in database", () => {
+    return request(app)
+      .get("/api/reviews?category=badString")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toEqual("Category not found");
+      });
+  });
 });

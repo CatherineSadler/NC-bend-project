@@ -73,9 +73,21 @@ exports.selectReviews = (sort_by = "created_at", order = "DESC", category) => {
   }
 
   SQLString += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`;
-  return db.query(SQLString, values).then((reviews) => {
-    return reviews.rows;
-  });
+  return this.selectCategories()
+    .then((validCategories) => {
+      const categoryNames = validCategories.map((category) => {
+        return category.slug;
+      });
+      categoryNames.push(undefined);
+      if (!categoryNames.includes(category)) {
+        return Promise.reject({ status: 404, msg: "Category not found" });
+      }
+    })
+    .then(() => {
+      return db.query(SQLString, values).then((reviews) => {
+        return reviews.rows;
+      });
+    });
 };
 
 exports.selectReviewsById = (review_id) => {

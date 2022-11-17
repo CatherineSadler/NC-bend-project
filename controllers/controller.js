@@ -8,6 +8,8 @@ const {
   selectUsers,
 } = require("../models/model.js");
 
+const { checkCategory } = require("../db/seeds/utils.js");
+
 exports.getCategories = (req, res, next) => {
   return selectCategories()
     .then((categories) => {
