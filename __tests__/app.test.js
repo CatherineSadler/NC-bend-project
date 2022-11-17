@@ -219,14 +219,14 @@ describe("/api/reviews/:review_id/comments", () => {
       body: "this is a test comment",
     };
     return request(app)
-      .post("/api/reviews/1/comments")
-      .send(newCommentNoUsername)
-      .expect(400)
-      .then((res) => {
-        expect(res.body.msg).toBe("Incomplete object on body");
-      });
-  });
-  test("POST 400 - errors for review_id not of type integer", () => {
+    .post('/api/reviews/1/comments')
+    .send(newCommentNoUsername)
+    .expect(400)
+    .then(res => {
+      expect(res.body.msg).toBe('Incomplete object on body')
+  })
+  })
+  test('POST 400 - errors for review_id not of type integer', () => {
     const newComment = {
       body: "this is a test comment",
       username: "mallionaire",
