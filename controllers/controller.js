@@ -60,7 +60,7 @@ exports.patchReviewVotesById = (req, res, next) => {
     .catch(next);
 };
 
-exports.postCommentsByReviewId = (req,res,next) => {
+exports.postCommentsByReviewId = (req, res, next) => {
   const body = req.body.body;
   const username = req.body.username;
   const review_id = req.params.review_id;
@@ -77,11 +77,10 @@ exports.getUsers = (req, res, next) => {
   });
 };
 
-exports.deleteComment = (req,res,next) => {
+exports.deleteComment = (req, res, next) => {
   return removeComment(req.params.comment_id)
-  .then(() => {
-    res.status(204).send()
-  })
-  .catch(next)
-}
-
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(next);
+};

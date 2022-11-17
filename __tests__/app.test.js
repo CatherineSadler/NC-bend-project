@@ -219,14 +219,14 @@ describe("/api/reviews/:review_id/comments", () => {
       body: "this is a test comment",
     };
     return request(app)
-    .post('/api/reviews/1/comments')
-    .send(newCommentNoUsername)
-    .expect(400)
-    .then(res => {
-      expect(res.body.msg).toBe('Incomplete object on body')
-  })
-  })
-  test('POST 400 - errors for review_id not of type integer', () => {
+      .post("/api/reviews/1/comments")
+      .send(newCommentNoUsername)
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("Incomplete object on body");
+      });
+  });
+  test("POST 400 - errors for review_id not of type integer", () => {
     const newComment = {
       body: "this is a test comment",
       username: "mallionaire",
@@ -408,21 +408,21 @@ describe("/api/reviews?sort_by=title", () => {
   });
 });
 
-describe('/api/comments/:comment_id', () => {
-  test('DELETE 204: returns empty body upon successful deletion', () => {
+describe("/api/comments/:comment_id", () => {
+  test("DELETE 204: returns empty body upon successful deletion", () => {
     return request(app)
-    .delete('/api/comments/1')
-    .expect(204)
-    .then(res => {
-      expect(res.body).toEqual({})
-    })
+      .delete("/api/comments/1")
+      .expect(204)
+      .then((res) => {
+        expect(res.body).toEqual({});
+      });
   });
-  test('DELETE 404 - errors for comment id not found', () => {
+  test("DELETE 404 - errors for comment id not found", () => {
     return request(app)
-    .delete('/api/comments/1000')
-    .expect(404)
-    .then(res => {
-      expect(res.body.msg).toBe('Comment not found')
-    })
+      .delete("/api/comments/1000")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Comment not found");
+      });
   });
 });
