@@ -9,6 +9,7 @@ const {
   postCommentsByReviewId,
   getUsers,
   deleteComment,
+  getEndpoints
 } = require("./controllers/controller.js");
 
 app.use(express.json());
@@ -21,6 +22,7 @@ app.post("/api/reviews/:review_id/comments", postCommentsByReviewId);
 app.patch("/api/reviews/:review_id", patchReviewVotesById);
 app.get("/api/users", getUsers);
 app.delete("/api/comments/:comment_id", deleteComment)
+app.get("/api", getEndpoints)
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
