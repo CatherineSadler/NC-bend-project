@@ -9,6 +9,8 @@ const {
   removeComment,
 } = require("../models/model.js");
 
+const endpoints =require('../endpoints.js')
+
 exports.getCategories = (req, res, next) => {
   return selectCategories()
     .then((categories) => {
@@ -79,3 +81,7 @@ exports.deleteComment = (req,res,next) => {
   })
   .catch(next)
 }
+
+exports.getEndpoints = (req, res, next) => {
+  res.status(200).send({ endpoints });
+};
